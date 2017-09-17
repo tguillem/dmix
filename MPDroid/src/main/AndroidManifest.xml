@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     package="com.namelessdev.mpdroid"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -15,6 +16,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- Wake Lock for Streaming -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-sdk tools:overrideLibrary="android.support.v17.leanback" />
+
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
 
     <application
         android:name="com.namelessdev.mpdroid.MPDApplication"
@@ -43,6 +50,10 @@
                 <action android:name="com.namelessdev.mpdroid.PLAYBACK_VIEWER" />
 
                 <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
 
             <meta-data
@@ -247,5 +258,26 @@
                 <data android:pathPattern=".*\\.xspf" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.namelessdev.mpdroid.DetailsActivity"
+            android:exported="true">
+
+            <!-- Receives the search request. -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <!-- No category needed, because the Intent will specify this class component -->
+            </intent-filter>
+
+            <!-- Points to searchable meta data. -->
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <!-- Provides search suggestions for keywords against video meta data. -->
+        <provider android:name="com.namelessdev.mpdroid.VideoContentProvider"
+            android:authorities="com.namelessdev.mpdroid"
+            android:exported="true" />
+
     </application>
 </manifest>
